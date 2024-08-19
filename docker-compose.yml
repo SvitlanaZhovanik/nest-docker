@@ -1,8 +1,12 @@
-servises:
-  postgres:
-    image: postgres:15-alpine
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
     ports:
-      - '5432:5432'
+      - '27017:27017'
+    volumes:
+      - ./mongo-data:/data/db
+    restart: always
     environment:
-      POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_DB: webapp_dev
+      - MONGO_INIT_ROOT_USERNAME=admin
+      - MONGO_INIT_ROOT_PASSWORD=admin
