@@ -1,11 +1,10 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, ObjectId } from 'mongoose';
 
-export type AuthDocument = HydratedDocument<ArticleModel>;
+export type ArticleDocument = HydratedDocument<ArticleModel>;
 
 @Schema()
 export class ArticleModel {
-    @Prop()
     _id: ObjectId;
     @Prop({ required: true })
     image: string;
