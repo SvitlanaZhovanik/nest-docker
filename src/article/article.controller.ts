@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
 import { ArticleModel } from './models/article.model';
 import { FindArticleDto } from './dto/find-article.dto';
 import { CreateArticleDto } from './dto/create-article.dto';
@@ -10,7 +10,7 @@ export class ArticleController {
     constructor(private readonly articleService: ArticleService) { }
     @Get()
     async getAll() {
-        this.articleService.findAll();
+        return this.articleService.findAll();
     }
 
     @Get(':id')
@@ -22,6 +22,7 @@ export class ArticleController {
         return article
     }
 
+    @UsePipes(new ValidationPipe())
     @Post('create')
     async create(@Body() dto: CreateArticleDto) {
         return this.articleService.create(dto);
@@ -41,6 +42,7 @@ export class ArticleController {
         if (!updatedArticle) {
             throw new HttpException(ARTICLE_NOT_FOUND, HttpStatus.NOT_FOUND);
         }
+        return updatedArticle;
     }
 
     @HttpCode(200)
