@@ -2,11 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ArticleModule } from './article/article.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getMongoConfig } from './configs/mongo.config';
+
 
 @Module({
   imports: [
@@ -16,7 +16,6 @@ import { getMongoConfig } from './configs/mongo.config';
       inject: [ConfigService],
       useFactory: getMongoConfig,
     }),
-    UsersModule,
     AuthModule,
     ArticleModule,
   ],

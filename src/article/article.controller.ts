@@ -1,9 +1,24 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Patch, Post, UsePipes, ValidationPipe } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    HttpCode,
+    HttpException,
+    HttpStatus,
+    Param,
+    Patch,
+    Post,
+    UseGuards,
+    UsePipes,
+    ValidationPipe
+} from '@nestjs/common';
 import { ArticleModel } from './models/article.model';
 import { FindArticleDto } from './dto/find-article.dto';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { ArticleService } from './article.service';
 import { ARTICLE_NOT_FOUND } from './article.constants';
+import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 
 @Controller('article')
 export class ArticleController {
@@ -22,12 +37,14 @@ export class ArticleController {
         return article
     }
 
+    @UseGuards(JwtAuthGuard)
     @UsePipes(new ValidationPipe())
     @Post('create')
     async create(@Body() dto: CreateArticleDto) {
         return this.articleService.create(dto);
     }
 
+    @UseGuards(JwtAuthGuard)
     @Delete(':id')
     async delete(@Param('id') id: string) {
         const deletedArticle = await this.articleService.delete(id);
@@ -36,6 +53,7 @@ export class ArticleController {
         }
     }
 
+    @UsePipes(new ValidationPipe())
     @Patch(':id')
     async update(@Param('id') id: string, @Body() dto: ArticleModel) {
         const updatedArticle = await this.articleService.update(id, dto);

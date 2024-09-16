@@ -5,6 +5,10 @@ import { disconnect, Types } from 'mongoose';
 import { AppModule } from '../src/app.module';
 import { ARTICLE_NOT_FOUND } from '../src/article/article.constants';
 
+const loginDto = {
+    login: "LanaSvetCat@gmail.com",
+    password: "test"
+}
 const testDTO = {
     image: 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png',
     title: "Hello world",
@@ -15,6 +19,7 @@ const testDTO = {
 describe('AppController (e2e)', () => {
     let app: INestApplication;
     let createdId: string;
+    let token: string;
 
     beforeEach(async () => {
         const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -22,11 +27,16 @@ describe('AppController (e2e)', () => {
         }).compile();
         app = moduleFixture.createNestApplication();
         await app.init();
+
+        const { body } = await request(app.getHttpServer()).post('/auth/login').send(loginDto);
+        token = body.access_token;
+
     });
 
     it('/article/create (POST)- success', async () => {
         return request(app.getHttpServer())
             .post('/article/create')
+            .set('Authorization', 'Bearer ' + token)
             .send(testDTO)
             .expect(201)
             .then(({ body }: request.Response) => {
@@ -38,6 +48,7 @@ describe('AppController (e2e)', () => {
     it('/article/create (POST)- error', async () => {
         return request(app.getHttpServer())
             .post('/article/create')
+            .set('Authorization', 'Bearer ' + token)
             .send({ ...testDTO, categories: 'base' })
             .expect(400)
             .then(({ body }: request.Response) => {
@@ -66,6 +77,7 @@ describe('AppController (e2e)', () => {
     it('/article/:id (DELETE) - fail', () => {
         return request(app.getHttpServer())
             .delete('/article/' + new Types.ObjectId().toHexString())
+            .set('Authorization', 'Bearer ' + token)
             .expect(404, {
                 statusCode: 404,
                 message: ARTICLE_NOT_FOUND
@@ -75,6 +87,7 @@ describe('AppController (e2e)', () => {
     it('/article/:id (DELETE)', () => {
         return request(app.getHttpServer())
             .delete('/article/' + createdId)
+            .set('Authorization', 'Bearer ' + token)
             .expect(200);
     })
 
