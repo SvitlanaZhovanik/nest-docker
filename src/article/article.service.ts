@@ -20,11 +20,11 @@ export class ArticleService {
         return this.articleModel.findById(id).exec();
     }
 
-    async update(id: string, dto: CreateArticleDto): Promise<ArticleModel> | null {
+    async updateByID(id: string, dto: CreateArticleDto): Promise<ArticleModel> | null {
         return this.articleModel.findByIdAndUpdate(id, dto, { new: true }).exec();
     }
 
-    async delete(id: string): Promise<ArticleModel> | null {
+    async deleteByID(id: string): Promise<ArticleModel> | null {
         return this.articleModel.findByIdAndDelete(id).exec();
     }
 

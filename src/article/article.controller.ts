@@ -19,6 +19,7 @@ import { CreateArticleDto } from './dto/create-article.dto';
 import { ArticleService } from './article.service';
 import { ARTICLE_NOT_FOUND } from './article.constants';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
+import { IdValidationPipe } from '../pipes/id-validation.pipe';
 
 @Controller('article')
 export class ArticleController {
@@ -29,7 +30,7 @@ export class ArticleController {
     }
 
     @Get(':id')
-    async getById(@Param('id') id: string) {
+    async getById(@Param('id', IdValidationPipe) id: string) {
         const article = await this.articleService.findById(id);
         if (!article) {
             throw new HttpException(ARTICLE_NOT_FOUND, HttpStatus.NOT_FOUND);
@@ -46,8 +47,8 @@ export class ArticleController {
 
     @UseGuards(JwtAuthGuard)
     @Delete(':id')
-    async delete(@Param('id') id: string) {
-        const deletedArticle = await this.articleService.delete(id);
+    async delete(@Param('id', IdValidationPipe) id: string) {
+        const deletedArticle = await this.articleService.deleteByID(id);
         if (!deletedArticle) {
             throw new HttpException(ARTICLE_NOT_FOUND, HttpStatus.NOT_FOUND);
         }
@@ -55,8 +56,8 @@ export class ArticleController {
 
     @UsePipes(new ValidationPipe())
     @Patch(':id')
-    async update(@Param('id') id: string, @Body() dto: ArticleModel) {
-        const updatedArticle = await this.articleService.update(id, dto);
+    async update(@Param('id', IdValidationPipe) id: string, @Body() dto: ArticleModel) {
+        const updatedArticle = await this.articleService.updateByID(id, dto);
         if (!updatedArticle) {
             throw new HttpException(ARTICLE_NOT_FOUND, HttpStatus.NOT_FOUND);
         }
