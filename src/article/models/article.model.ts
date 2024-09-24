@@ -6,12 +6,16 @@ export type ArticleDocument = HydratedDocument<ArticleModel>;
 @Schema()
 export class ArticleModel {
     _id: ObjectId;
+
     @Prop({ required: true })
     image: string;
-    @Prop({ required: true })
+
+    @Prop({ required: true, text: true })
     title: string;
+
     @Prop({ required: true })
     description: string;
+
     @Prop({ type: [String] })
     categories: string[];
 }

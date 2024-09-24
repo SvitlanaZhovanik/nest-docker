@@ -14,7 +14,6 @@ import {
     ValidationPipe
 } from '@nestjs/common';
 import { ArticleModel } from './models/article.model';
-import { FindArticleDto } from './dto/find-article.dto';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { ArticleService } from './article.service';
 import { ARTICLE_NOT_FOUND } from './article.constants';
@@ -65,9 +64,9 @@ export class ArticleController {
     }
 
     @HttpCode(200)
-    @Post()
-    async find(@Body() dto: FindArticleDto) {
-        return this.articleService.find(dto);
+    @Get('search/:text')
+    async searchText(@Param("text") text: string) {
+        return this.articleService.findByText(text);
     }
 
 }

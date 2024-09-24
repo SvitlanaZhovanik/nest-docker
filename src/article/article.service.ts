@@ -28,7 +28,7 @@ export class ArticleService {
         return this.articleModel.findByIdAndDelete(id).exec();
     }
 
-    async find(dto: any): Promise<ArticleModel[]> {
-        return this.articleModel.find(dto).exec();
+    async findByText(text: string): Promise<ArticleModel[]> {
+        return this.articleModel.find({ $text: { $search: text, $caseSensitive: false } }).exec();
     }
 }
