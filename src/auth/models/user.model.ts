@@ -9,8 +9,6 @@ export class UserModel {
     email: string;
     @Prop({ required: true })
     passwordHash: string;
-    @Prop()
-    role: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserModel);

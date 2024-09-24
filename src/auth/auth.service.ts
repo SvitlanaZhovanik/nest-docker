@@ -16,7 +16,6 @@ export class AuthService {
         const newUser = new this.userModel({
             email: dto.login,
             passwordHash: await hash(dto.password, salt),
-            role: 'user'
         });
         return newUser.save();
     }
@@ -41,4 +40,5 @@ export class AuthService {
             access_token: await this.jwtService.signAsync(payload)
         }
     }
+
 }
