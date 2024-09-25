@@ -12,7 +12,7 @@ jobs:
       - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@v5
         with:
-          name: https://ghcr.io/SvitlanaZhovanik/nest-docker/top-api
+          name: ghcr.io/SvitlanaZhovanik/nest-docker/top-api
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           tags: 'develop'
