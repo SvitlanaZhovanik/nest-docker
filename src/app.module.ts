@@ -6,10 +6,13 @@ import { AuthModule } from './auth/auth.module';
 import { ArticleModule } from './article/article.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getMongoConfig } from './configs/mongo.config';
+import { RssParserModule } from './rss-parser/rss-parser.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot(),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -18,6 +21,7 @@ import { getMongoConfig } from './configs/mongo.config';
     }),
     AuthModule,
     ArticleModule,
+    RssParserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

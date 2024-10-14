@@ -9,6 +9,7 @@ import { ArticleService } from './article.service';
   imports: [
     MongooseModule.forFeature([{ name: ArticleModel.name, schema: ArticleSchema }])
   ],
-  providers: [ArticleService]
+  providers: [ArticleService],
+  exports: [ArticleService]
 })
 export class ArticleModule { }

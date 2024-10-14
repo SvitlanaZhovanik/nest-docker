@@ -3,12 +3,15 @@ import { HydratedDocument, ObjectId } from 'mongoose';
 
 export type ArticleDocument = HydratedDocument<ArticleModel>;
 
-@Schema()
+@Schema({ timestamps: true, versionKey: false })
 export class ArticleModel {
     _id: ObjectId;
 
-    @Prop({ required: true })
-    image: string;
+    @Prop({ nullable: true })
+    enclosureUrl: string;
+
+    @Prop({ nullable: true })
+    enclosureType: string;
 
     @Prop({ required: true, text: true })
     title: string;
@@ -16,8 +19,14 @@ export class ArticleModel {
     @Prop({ required: true })
     description: string;
 
-    @Prop({ type: [String] })
-    categories: string[];
+    @Prop({ required: true, unique: true })
+    link: string;
+
+    @Prop({ required: true })
+    guid: string;
+
+    @Prop({ required: true })
+    pubDate: Date;
 }
 
 export const ArticleSchema = SchemaFactory.createForClass(ArticleModel);

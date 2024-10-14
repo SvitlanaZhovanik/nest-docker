@@ -1,17 +1,26 @@
-import { IsString, IsArray, IsOptional, } from 'class-validator';
+import { IsString, IsUrl, IsOptional } from 'class-validator';
 
 export class CreateArticleDto {
     @IsString()
-    image: string;
+    title: string;
+
+    @IsUrl()
+    link: string;
 
     @IsString()
-    title: string;
+    pubDate: string;
+
+    @IsString()
+    guid: string;
 
     @IsString()
     description: string;
 
+    @IsUrl()
     @IsOptional()
-    @IsArray()
-    @IsString({ each: true })
-    categories?: string[];
+    enclosureUrl: string;
+
+    @IsString()
+    @IsOptional()
+    enclosureType: string;
 }

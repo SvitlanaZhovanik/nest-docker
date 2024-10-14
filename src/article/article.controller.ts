@@ -13,7 +13,6 @@ import {
     UsePipes,
     ValidationPipe
 } from '@nestjs/common';
-import { ArticleModel } from './models/article.model';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { ArticleService } from './article.service';
 import { ARTICLE_NOT_FOUND } from './article.constants';
@@ -55,7 +54,7 @@ export class ArticleController {
 
     @UsePipes(new ValidationPipe())
     @Patch(':id')
-    async update(@Param('id', IdValidationPipe) id: string, @Body() dto: ArticleModel) {
+    async update(@Param('id', IdValidationPipe) id: string, @Body() dto: CreateArticleDto) {
         const updatedArticle = await this.articleService.updateByID(id, dto);
         if (!updatedArticle) {
             throw new HttpException(ARTICLE_NOT_FOUND, HttpStatus.NOT_FOUND);

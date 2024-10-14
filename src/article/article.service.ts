@@ -31,4 +31,7 @@ export class ArticleService {
     async findByText(text: string): Promise<ArticleModel[]> {
         return this.articleModel.find({ $text: { $search: text, $caseSensitive: false } }).exec();
     }
+    async findByLink(link: string): Promise<ArticleModel> {
+        return this.articleModel.findOne({ link }).exec();
+    }
 }
