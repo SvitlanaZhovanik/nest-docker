@@ -3,6 +3,8 @@ import { ArticleModel } from './models/article.model';
 import { Model } from 'mongoose';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { InjectModel } from '@nestjs/mongoose';
+import { SORT_BY } from './article.constants';
+import { sortByOptions } from './article.utils';
 
 @Injectable()
 export class ArticleService {
@@ -12,9 +14,19 @@ export class ArticleService {
         return this.articleModel.create(dto);
     }
 
-    async findAll(): Promise<ArticleModel[]> {
-        return this.articleModel.find().exec();
+    async findAll(page: number, limit: number, text: string, sortBy: SORT_BY): Promise<ArticleModel[]> {
+        const skip = (page - 1) * limit;
+        const query = text ? { $text: { $search: text, $caseSensitive: false } } : {};
+        const sort = sortByOptions(sortBy);
+
+        return this.articleModel.find(query).skip(skip).limit(limit).sort(sort).exec();
     }
+
+    async countArticles(text: string): Promise<number> {
+        const query = text ? { $text: { $search: text, $caseSensitive: false } } : {};
+        return this.articleModel.countDocuments(query).exec();
+    }
+
 
     async findById(id: string): Promise<ArticleModel> | null {
         return this.articleModel.findById(id).exec();
@@ -28,9 +40,6 @@ export class ArticleService {
         return this.articleModel.findByIdAndDelete(id).exec();
     }
 
-    async findByText(text: string): Promise<ArticleModel[]> {
-        return this.articleModel.find({ $text: { $search: text, $caseSensitive: false } }).exec();
-    }
     async findByLink(link: string): Promise<ArticleModel> {
         return this.articleModel.findOne({ link }).exec();
     }
