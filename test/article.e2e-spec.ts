@@ -10,10 +10,13 @@ const loginDto = {
     password: "test"
 }
 const testDTO = {
-    image: 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png',
-    title: "Hello world",
-    description: "This is a test article",
-    categories: ["test", "article"]
+    enclosureUrl: 'https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png',
+    enclosureType: 'image/png',
+    title: 'Google',
+    description: 'Google is a search engine',
+    link: 'https://www.google.com',
+    guid: 'google',
+    pubDate: new Date()
 };
 
 describe('AppController (e2e)', () => {
