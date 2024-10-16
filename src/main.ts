@@ -10,6 +10,7 @@ async function bootstrap() {
     .setTitle('RSS news api')
     .setDescription('The news API about cats')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
 
   const option: SwaggerDocumentOptions = {
