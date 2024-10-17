@@ -66,6 +66,7 @@ export class ArticleController {
     @ApiBody({ type: CreateArticleDto })
     @ApiCreatedResponse({ description: 'Article created' })
     @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+    @ApiBadRequestResponse({ description: 'Bad request' })
     async create(@Body() dto: CreateArticleDto) {
         return this.articleService.create(dto);
     }
